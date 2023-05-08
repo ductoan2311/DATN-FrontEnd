@@ -1,0 +1,182 @@
+<app-header></app-header>
+<div class="body">
+  <div class="container">
+    <div class="row">
+      <div class="col-3 body__aside">
+        <div class="card ">
+          <a class="sub-btn"
+          ><i class="fas fa-table" style="margin-right: 15px"></i>Tìm kiếm<i
+            class="fas fa-angle-right dropdown" style="position: absolute;top: 27px;left: 90%;"
+          ></i
+          ></a>
+          <div class="accordion" id="accordionPanelsStayOpenExample" >
+            <div class="accordion-item">
+              <div class="accordion-header">
+                <button class="accordion-button collapsed" type="button"
+                        data-bs-toggle="collapse" data-bs-target="#collapseThree"
+                        aria-expanded="false" aria-controls="panelsStayOpen-collapseOne">
+                  Phụ kiện
+                </button>
+              </div>
+              <div id="collapseThree" class="accordion-collapse collapse show"
+                   aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+                <div class="accordion-body pt-0 grid-container">
+                  <nz-checkbox-group class="checkbox-data" [(ngModel)]="checkOptions" (ngModelChange)="checkbox(checkOptions)"></nz-checkbox-group>
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <div class="accordion-header" >
+                <button class="accordion-button collapsed" type="button"
+                        data-bs-toggle="collapse" data-bs-target="#collapseThree1"
+                        aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo">
+                  Giá
+                </button>
+              </div>
+              <div id="collapseThree1" class="accordion-collapse collapse show"
+                   aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+                <div class="accordion-body pt-0 grid-container">
+                  <nz-radio-group [(ngModel)]="priceRange" (ngModelChange)="radioPrice(priceRange)">
+                    <label nz-radio nzValue="1">0đ - 1.000.000đ</label>
+                    <label nz-radio nzValue="2">1.000.000đ - 5.000.000đ</label>
+                    <label nz-radio nzValue="3">5.000.000đ - 10.000.000đ</label>
+                    <label nz-radio nzValue="4">10.000.000đ - 20.000.000đ</label>
+                  </nz-radio-group>
+
+                </div>
+              </div>
+            </div>
+            <div class="button__search ">
+              <a (click)="search()">Tìm kiếm</a>
+            </div>
+            <div class="button__search ">
+              <a (click)="resetSearch()">Reset</a>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="border accordion accordion-flush mt-3" id="">
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="flush-headingOne">
+              <div class="item">
+                <a class="sub-btn"
+                ><i class="fas fa-table"></i>Bán chạy nhất<i
+                  class="fas fa-angle-right dropdown"
+                ></i
+                ></a>
+                <div class="card-body sub-menu">
+                  <div class="row" *ngFor="let product of productTrending">
+                    <div class="card-title col-5 card1__image ">
+                      <div class="img-hover-zoom--brightness">
+                        <img [src]="product.currentImg">
+                      </div>
+                    </div>
+                    <div class="col-7">
+                      <p class="card-text product-name">{{product.nameProduct}}</p>
+                      <p class="money">{{product.productSizes ? (product.productSizes[0]?.salePrice + '' | vnd) : ''}}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </h2>
+          </div>
+        </div>
+      </div>
+      <div class="col-9 body__article">
+
+        <div *ngIf="categoryId == ''; else elseBlock">
+          <mdb-carousel [controls]="true" [indicators]="true" [animation]="'fade'">
+            <mdb-carousel-item >
+              <img
+                src="assets/images/blog3.jpg"
+                class="d-block w-100 images-slider"
+                alt="..."
+              />
+            </mdb-carousel-item>
+            <mdb-carousel-item>
+              <img
+                src="assets/images/banner1.jpg"
+                class="d-block w-100 images-slider"
+                alt="..."
+              />
+            </mdb-carousel-item>
+            <mdb-carousel-item>
+              <img
+                src="https://mdbootstrap.com/img/Photos/Slides/img%20(23).webp"
+                class="d-block w-100 images-slider images-slider"
+                alt="..."
+              />
+            </mdb-carousel-item>
+          </mdb-carousel>
+        </div>
+        <ng-template #elseBlock>
+          <div class="row refineSearch__image refineSearch__image-first">
+            <div class="col-xs-3 col-sm-2 col-md-3 col-lg-2 col-xl-2 " >
+              <h3 style="">{{categoryById.name}}</h3>
+            </div>
+          </div>
+        </ng-template>
+
+        <div class="refineSearch">
+          <div class="refineSearch__title">
+            <h3>Tìm kiếm</h3>
+          </div>
+          <div class="row refineSearch__image">
+            <div class="col-xs-3 col-sm-2 col-md-3 col-lg-2 col-xl-2 " >
+              <button class="button-cate" (click)="loadDataByCategory()">Tất cả</button>
+            </div>
+
+            <div class="col-xs-3 col-sm-2 col-md-3 col-lg-2 col-xl-2 " *ngFor="let cate of categories">
+              <button class="button-cate" (click)="loadDataByCategory(cate.categoryId)">{{cate.name}}</button>
+            </div>
+
+
+            <!--        <div class="col-xs-3 col-sm-2 col-md-3 col-lg-2 col-xl-2 image1">-->
+            <!--          <a href=""><img src="./../../../assets/images/Matdaychuyen.jpg" alt=""></a>-->
+            <!--          <a href="">Pendants</a>-->
+            <!--        </div>-->
+            <!--        <div class="col-xs-3 col-sm-2 col-md-3 col-lg-2 col-xl-2 image1">-->
+            <!--          <a href=""><img src="./../../../assets/images/allproductKhuyen.jpg" alt=""></a>-->
+            <!--          <a href="">Pendants</a>-->
+            <!--        </div>-->
+            <!--        <div class="col-xs-3 col-sm-2 col-md-3 col-lg-2 col-xl-2 image1">-->
+            <!--          <a href=""> <img src="./../../../assets/images/small2.png" alt=""></a>-->
+            <!--          <a href="">Earrings</a>-->
+            <!--        </div>-->
+          </div>
+        </div>
+        <div class="sort">
+          <div class="row sortAll">
+            <div class="col-6 sort1 sort__title">Sản phẩm ({{this.total}})</div>
+          </div>
+          <div class="product1">
+            <div class="row product1__image">
+              <div class="col-3 image1" *ngFor="let product of products">
+                <img [src]="product.productImages ? product.productImages[0].imageUrl : null" (click)="showProductDetail(product)" alt="">
+                <div class="middle">
+                  <a (click)="showProductDetail(product)" title="Add to cart"><i class="fas fa-cart-plus"></i></a>
+                  <a (click)="showProductDetail(product)" title="Chi tiết"><i class="fas fa-eye"></i></a>
+                  <a title="Yêu thích"><i class="far fa-heart"></i></a>
+                  <a title=""><i class="fas fa-layer-group"></i></a>
+
+                </div>
+                <div class="image1__content">
+                  <span class="product-name" (click)="showProductDetail(product)">{{product.nameProduct}}</span>
+                  <p>{{product.productSizes ? (product.productSizes[0].salePrice + '' |vnd) : '' }} </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <jewelry-pagination
+            [pageIndex]="productSearchRequest.pageIndex"
+            [pageSize]="productSearchRequest.pageSize"
+            [total]="total"
+            (onChange)="onQuerySearch($event)">
+          </jewelry-pagination>
+        </div>
+      </div>
+    </div>
+    <app-footer></app-footer>
+  </div>
+</div>

@@ -1,0 +1,69 @@
+<header class="header">
+  <div class="container">
+
+    <div class="header__container">
+      <!--      <div class="header__menu">-->
+      <nav class="style-4">
+        <ul class="menu-4">
+          <li><a [routerLink]="''" data-hover="Trang chủ">Trang chủ</a></li>
+          <li><a href="#" data-hover="Giới thiệu ">Giới thiệu</a></li>
+          <li><a [routerLink]="'/chinhsach'" data-hover="Chính sách">Chính sách</a></li>
+          <li><a href="#" data-hover="Dịch vụ">Dịch vụ</a></li>
+          <li><a [routerLink]="'/product/list'" data-hover="Sản phẩm">Sản phẩm</a></li>
+
+        </ul>
+      </nav>
+      <!--      </div>-->
+      <div class="header__login">
+
+      </div>
+    </div>
+  </div>
+</header>
+<div class="header2">
+  <div class="container">
+    <div class="row header2__container">
+      <div class="col-2 header__logo" style="display: flex; justify-content: center" >
+        <img src="assets/images/logoUser_pre.png" style="width: 100px;" alt="">
+      </div>
+      <div class="col-7 header__search">
+        <div class="row">
+          <div class="col-md-12 mx-auto">
+            <div class="input-group">
+              <input #keyword class="form-control border-end-0 border" type="search" placeholder="Tìm kiếm"
+                    [(ngModel)]="keywordSearch">
+              <span class="input-group-append">
+                                    <button class="btn btn-outline-secondary bg-white border-start-0  border ms-n5"
+                                            type="button" (click)="search()">
+                                        <i class="fa fa-search"></i>
+                                    </button>
+                                </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-3 header__account">
+        <div class="row">
+          <div class="col-6 ac">
+
+            <div class="dropdown">
+              <a class="dropbtn" ><img src="assets/images/account.svg" alt="" class="icon">Tài khoản</a>
+              <div class="dropdown-content" style="z-index: 200">
+                <a (click)="showUser() " *ngIf="isLogin">Thông tin cá nhân</a>
+                <a (click)="showLogin()"*ngIf="!isLogin">Đăng nhập</a>
+                <a (click)="showRegister()"*ngIf="!isLogin">Đăng ký</a>
+                <a (click)="logout() " *ngIf="isLogin">Đăng xuất</a>
+              </div>
+            </div>
+          </div>
+          <div class="col-6 lineDoc">
+            <a (click)="showCart()"> <img src="assets/images/header-cart.svg" alt="" class="icon"> Giỏ hàng <nz-badge [nzCount]="message">
+              <a class="head-example"></a>
+            </nz-badge> </a>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

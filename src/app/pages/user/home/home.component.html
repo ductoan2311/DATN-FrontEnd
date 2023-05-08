@@ -1,0 +1,266 @@
+
+<app-header></app-header>
+<div class="body">
+  <div class="container">
+    <div class="row">
+      <div class="col-3 body__aside">
+        <div class="border accordion accordion-flush active">
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <div class="item">
+                <a class="sub-btn"
+                ><i class="fas fa-table"></i>Tất cả thể loại<i
+                  class="fas fa-angle-right dropdown"
+                ></i
+                ></a>
+                <div class="sub-menu">
+                  <div *ngFor="let cate of categories">
+                    <a (click)="showProductByCate(cate.categoryId)" class="sub-item">{{cate.name}}</a>
+                  </div>
+                </div>
+              </div>
+            </h2>
+          </div>
+        </div>
+<!--        Sản phẩm hấp dẫn-->
+<!--        <div class="border accordion accordion-flush active">-->
+<!--          <div class="accordion-item">-->
+<!--            <h2 class="accordion-header">-->
+<!--              <div class="item">-->
+<!--                <a class="sub-btn"-->
+<!--                ><i class="fas fa-table"></i>Sản phẩm hấp dẫn<i-->
+<!--                  class="fas fa-angle-right dropdown"-->
+<!--                ></i-->
+<!--                ></a>-->
+<!--                <div class="card-body sub-menu">-->
+<!--                  <div class="card-title card1__image "><img src="assets/images/medium1.jpg" alt=""></div>-->
+<!--                  <p class="product-name">Bông tai Vàng trắng 10K đính đá ECZ</p>-->
+<!--                  <p class="product-name">$19.00</p>-->
+<!--                </div>-->
+<!--              </div>-->
+<!--            </h2>-->
+<!--          </div>-->
+<!--        </div>-->
+        <div class="border accordion accordion-flush active" >
+          <div class="accordion-item">
+            <h2 class="accordion-header" >
+              <div class="item">
+                <a class="sub-btn"
+                ><i class="fas fa-table"></i>Sản phẩm mới<i
+                  class="fas fa-angle-right dropdown"
+                ></i
+                ></a>
+                <div class=" card-body sub-menu">
+                  <div class="row" *ngFor="let product of newProducts">
+                    <div class="card-title col-5 card1__image ">
+                      <div class="img-hover-zoom--brightness">
+                        <img [src]="product.firstImg">
+                      </div>
+                    </div>
+                    <div class="col-7">
+                      <p class="card-text product-name">{{product.nameProduct}}</p>
+                      <p class="money">{{product.productSizes ? (product.productSizes[0]?.salePrice + '' | vnd) : ''}}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </h2>
+          </div>
+        </div>
+        <div class="wedding">
+          <div class="wedding__image"></div>
+          <div class="wedding__text">
+            <span>Nhẫn cưới</span>
+          </div>
+        </div>
+        <div class="border accordion accordion-flush active" id="accordionFlushExample">
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="flush-headingOne">
+              <div class="item">
+                <a class="sub-btn"
+                ><i class="fas fa-table"></i>Bán chạy nhất<i
+                  class="fas fa-angle-right dropdown"
+                ></i
+                ></a>
+                <div class="card-body sub-menu">
+                  <div class="row" *ngFor="let product of productTrending">
+                    <div class="card-title col-5 card1__image ">
+                      <div class="img-hover-zoom--brightness">
+                        <img [src]="product.currentImg">
+                      </div>
+                    </div>
+                    <div class="col-7">
+                      <p class="card-text product-name">{{product.nameProduct}}</p>
+                      <p class="money">{{product.productSizes ? (product.productSizes[0]?.salePrice + '' | vnd) : ''}}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </h2>
+          </div>
+        </div>
+
+      </div>
+      <div class="col-9 body__article">
+        <div class="slide1">
+          <img src="assets/images/slide1.png" alt="">
+        </div>
+        <div class="row slide23">
+          <div class="col-6 slide2">
+            <div class="slide2__text">
+              <p>2022 Bộ sưu tập</p>
+              <h4>Bông tai mới</h4>
+              <li> <a> Mua ngay</a> </li>
+            </div>
+            <div class="slide2__image"><img src="assets/images/slide2.png" alt=""></div>
+          </div>
+          <div class="col-6 slide2">
+            <div class="slide2__text">
+              <p>Thiết kế mới</p>
+              <h4>Vòng đeo tay</h4>
+              <li> <a> Mua ngay</a> </li>
+            </div>
+            <div class="slide2__image"><img src="assets/images/slide3.png" alt=""></div>
+          </div>
+        </div>
+
+          <!-- --------- review ----------- -->
+          <div class="nav nav-tabs" id="nav-tab" role="tablist">
+            <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab"
+                    data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home"
+                    aria-selected="true">Sản phẩm bán chaỵ</button>
+            <button class="nav-link inactive" id="nav-profile-tab" data-bs-toggle="tab"
+                    data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile"
+                    aria-selected="false">Sản phẩm mới</button>
+          </div>
+          <div class="tab-content" id="nav-tabContent">
+            <div class="tab-pane fade show active description" id="nav-home" role="tabpanel"
+                 aria-labelledby="nav-home-tab">
+              <div class="product1">
+                <div class="row product1__image">
+                  <div class="col-3 image1" *ngFor="let product of productTrending  ">
+                    <img [src]="product.productImages ? product.productImages[0].imageUrl : null" (click)="showProductDetail(product)" alt="">
+                    <div class="middle">
+                      <a (click)="addToCart(product)"><i class="fas fa-cart-plus"></i></a>
+                      <a (click)="showProductDetail(product)"><i class="fas fa-eye"></i></a>
+                      <a ><i class="far fa-heart"></i></a>
+                      <a><i class="fas fa-layer-group"></i></a>
+
+                    </div>
+                    <div class="image1__content">
+                      <span class="product-name" (click)="showProductDetail(product)">{{product.nameProduct}}</span>
+                      <p>{{product.productSizes ? (product.productSizes[0]?.salePrice + '' | vnd) : ''}}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="tab-pane fade review " id="nav-profile" role="tabpanel"
+                 aria-labelledby="nav-profile-tab"><div class="product1">
+              <div class="row product1__image">
+                <div class="col-3 image1" *ngFor="let product of newProducts">
+                  <img [src]="product.productImages ? product.productImages[0].imageUrl : null" (click)="showProductDetail(product)" alt="">
+                  <div class="middle">
+                    <a (click)="addToCart(product)" title="Add to cart"><i class="fas fa-cart-plus"></i></a>
+                    <a (click)="showProductDetail(product)" title="Xem chi tiết"><i class="fas fa-eye"></i></a>
+                    <a title="Yêu thích"><i class="far fa-heart"></i></a>
+                    <a ><i class="fas fa-layer-group"></i></a>
+
+                  </div>
+                  <div class="image1__content">
+                    <span class="product-name" (click)="showProductDetail(product)">{{product.nameProduct}}</span>
+                    <p>{{product.productSizes ? (product.productSizes[0]?.salePrice + '' | vnd) : ''}}</p>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+            </div>
+          </div>
+        <div class="row slide4">
+          <div class="slide2__text">
+            <p>Sản phẩm mới trong cửa hàng của chúng tôi</p>
+            <h1>Mua đồ trang sức Amadeus</h1>
+            <li> <a> Mua ngay</a> </li>
+          </div>
+          <div class="slide4__image"> <img src="assets/images/slide4.png" alt=""></div>
+        </div>
+        <div class="nav nav-tabs" id="nav-tab2" role="tablist">
+          <button class="nav-link inactive" id="nav-profile-tab2" data-bs-toggle="tab"
+                  data-bs-target="#nav-profile1" type="button" role="tab" aria-controls="nav-profile"
+                  aria-selected="false" (click)="loadDataByCategoryAndProduct()">Tất cả</button>
+          <button class="nav-link inactive" id="nav-profile-tab2" data-bs-toggle="tab"
+                  data-bs-target="#nav-profile1" type="button" role="tab" aria-controls="nav-profile"
+                  aria-selected="false" *ngFor="let cate of categories" (click)="loadDataByCategoryAndProduct(cate.categoryId)">{{cate.name}}</button>
+        </div>
+        <div class="tab-content" id="nav-tabContent2">
+          <div  id="nav-profile1" role="tabpanel"
+               aria-labelledby="nav-profile-tab"><div class="product1">
+            <div class="row product1__image">
+              <div class="col-3 image1" *ngFor="let product of products">
+                <img [src]="product.productImages ? product.productImages[0].imageUrl : null" (click)="showProductDetail(product)" alt="">
+                <div class="middle">
+                  <a (click)="addToCart(product)" title="Add to cart"><i class="fas fa-cart-plus"></i></a>
+                  <a (click)="showProductDetail(product)" title="Xem chi tiết"><i class="fas fa-eye"></i></a>
+                  <a title="Yêu thích"><i class="far fa-heart"></i></a>
+                  <a ><i class="fas fa-layer-group"></i></a>
+
+                </div>
+                <div class="image1__content">
+                  <span class="product-name" (click)="showProductDetail(product)">{{product.nameProduct}}</span>
+                  <p>{{product.productSizes ? (product.productSizes[0]?.salePrice + '' | vnd) : ''}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          </div>
+        </div>
+
+        <div class="blog">
+          <div class="blog__title">
+            <ul>
+              <li><a href="">Tin tức</a></li>
+
+            </ul>
+          </div>
+          <div class="row blog__image">
+            <div class="col-4 blog1">
+              <img src="assets/images/blog1.jpg" alt="">
+              <span>Ngày : 26 tháng 5, 2020</span>
+              <p>Năm 2020, Design studio đã ra mắt thương hiệu</p>
+            </div>
+            <div class="col-4 blog1">
+              <img src="assets/images/blog2.jpg" alt="">
+              <span>Date : 29 May, 2019</span>
+              <p>Năm 2019, Asprey London đã ra mắt thương hiệu</p>
+            </div>
+            <div class="col-4 blog1">
+              <img src="assets/images/blog3.jpg" alt="">
+              <span>Date : 06 May, 2022</span>
+              <p>Năm 2022, Announhka đã ra mắt thương hiệu</p>
+            </div>
+            <div class="border"></div>
+          </div>
+        </div>
+        <div class="blog2">
+          <div class="row blog2__image">
+            <div class="col-3 anh">
+              <img src="assets/images/logo2.png" alt="">
+            </div>
+            <div class="col-3 anh">
+              <img src="assets/images/logo3.png" alt="">
+            </div>
+            <div class="col-3 anh">
+              <img src="assets/images/logo4.png" alt="">
+            </div>
+            <div class="col-3 anh">
+              <img src="assets/images/blog5.png" alt="">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<app-footer></app-footer>
+

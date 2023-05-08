@@ -1,0 +1,261 @@
+<app-header></app-header>
+<!-- Shopping Cart -->
+<div class="shopping-cart section">
+  <div class="container" style="margin-top: 0" *ngIf="nodata ==false ;else nodata1">
+    <div class="row">
+      <div class="col-12">
+        <h1 class="text-giohang"> Giỏ hàng </h1>
+        <!-- Shopping Summery -->
+        <table class="table shopping-summery">
+          <thead>
+          <tr class="main-hading">
+            <th>Hình ảnh</th>
+            <th>Sản phẩm</th>
+            <th>Kích thước</th>
+            <th class="text-center">Giá</th>
+            <th class="text-center">Số lượng</th>
+            <th class="text-center">Thành tiền</th>
+            <th class="text-center"><i class="fa-solid fa-trash"></i></th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let cart of carts">
+<!--            <app-book [listProduct] = "array"></app-book>-->
+            <td class="image" data-title="No"><img [src]="cart.image" (click)="detailPro(cart)" alt="#"></td>
+            <td class="product-des" data-title="Description">
+              <p class="product-name"><a href="#"></a></p>
+              {{cart.productName}}
+              <p class="product-des">{{cart.code}}</p>
+            </td>
+            <td>{{cart.sizeName}}</td>
+            <td class="price" data-title="Price"><span>{{cart.price+'' | vnd}}</span></td>
+            <td class="qty" data-title="Qty"><!-- Input Order -->
+              <div class="input-group">
+                <div class="button minus">
+                  <button type="button" class="btn btn-primary btn-number" (click)="minusQuantity(cart)" data-type="minus" data-field="quant[1]">
+                    <i class="fa-solid fa-minus"></i>
+                  </button>
+                </div>
+                <input type="text" name="quant[1]" class="input-number" readonly data-min="1" data-max="100" value="1" [(ngModel)]="cart.amount">
+                <div class="button plus">
+                  <button type="button" class="btn btn-primary btn-number" (click)="addQuantity(cart)" data-type="plus" data-field="quant[1]">
+                    <i class="fa-solid fa-plus"></i>
+                  </button>
+                </div>
+              </div>
+              <!--/ End Input Order -->
+            </td>
+            <td class="total-amount" data-title="Total"><span>{{intoMoney(cart.price,cart.amount)+''| vnd}}</span></td>
+<!--            <td>  <button nz-button nzType="primary" (click)="showModal()">-->
+<!--              <span>Show Modal</span>-->
+<!--            </button>-->
+<!--              </td>-->
+<!--            <td class="action" data-title="Remove"><a (click)="delete(cart)"><i class="fa-solid fa-trash"></i></a></td>-->
+            <td class="action" data-title="Remove"><a (click)="showModal(cart)"><i class="fa-solid fa-trash"></i></a></td>
+            <nz-modal style="padding: 0"
+              [(nzVisible)]="isVisible"
+              nzTitle="Xác nhận xoá sản phẩm"
+              (nzOnCancel)="handleCancel()"
+              (nzOnOk)="handleOk(cart)"
+              [nzOkDanger]="true"
+              nzOkText="Xoá"
+              [nzOkLoading]="isOkLoading"
+            >
+              <p *nzModalContent>Bạn có chắc muốn xoá sản phẩm khỏi giỏ hàng không?</p>
+            </nz-modal>
+          </tr>
+          </tbody>
+        </table>
+        <!--/ End Shopping Summery -->
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <!-- Total Amount -->
+        <div class="total-amount">
+
+          <div class="row ">
+            <div class="col-lg-8 col-md-5 col-12">
+              <div class="row">
+
+                  <div class="left">
+                    <div class="coupon">
+                      <form [formGroup]="form" action="#" target="_blank">
+                        <div class="col-lg-12 col-md-5">
+                        <nz-select
+                          formControlName="eventId"
+                          nzAllowClear
+                          [nzPlaceHolder]="'Mã giảm giá'"
+                          (ngModelChange)="getTotal($event)"
+                          nzBorderless
+                        >
+                          <ng-container *ngFor="let event of events"                       style="border: none;"
+                          >
+                            <nz-option
+                              [nzValue]="event.eventId"
+                              [nzLabel]="event.name + ' - ' + 'Giảm ' + event.discount + '%'"
+                            ></nz-option>
+                          </ng-container>
+                        </nz-select>
+                      </div>
+                      <div class="row">
+                        <div class="col-4 mb-2">
+
+                          <nz-select
+                            formControlName="ward"
+                            nzBorderless
+                            removeOptionTitle
+                            (ngModelChange)="chargeShippingWard()"
+                            nzPlaceHolder="{{
+                              'Phường,Xã'
+                            }}"
+                          >
+                            <nz-option
+                              *ngFor="let item of this.ward"
+                              [nzLabel]="item.WardName"
+                              [nzValue]="item.WardCode"
+                            >
+
+                            </nz-option>
+                          </nz-select>
+                        </div>
+                          <div class="col-4 mb-2">
+
+                            <nz-select
+                              formControlName="district"
+                             removeOptionTitle
+                              nzBorderless
+                              (ngModelChange)="getWard($event)"
+                              nzPlaceHolder="{{
+                                'Quận,Huyện'
+                              }}"
+                            >
+                              <nz-option
+                                *ngFor="let item of this.distrist"
+                                [nzLabel]="item.DistrictName"
+                                [nzValue]="item.DistrictID"
+                              >
+
+                              </nz-option>
+                            </nz-select>
+
+                          </div>
+
+                          <div class="col-4 mb-2">
+                            <nz-select
+                            nzBorderless
+                              formControlName="province"
+                              (ngModelChange)="this.getDistrist($event)"
+                              [nzShowSearch]="true"
+                              nzPlaceHolder="{{
+                               'Tỉnh,Thành phố'
+                              }}"
+                            >
+
+                            <ng-container *ngFor="let item of province">
+                              <nz-option   [nzLabel]="item.ProvinceName"
+                              [nzValue]="item.ProvinceID"></nz-option>
+                            </ng-container>
+                          </nz-select>
+                          </div>
+                      <div class="col-lg-12 col-md-5">
+                        <textarea nz-input cols="30" rows="5"formControlName="addressDetail" placeholder="Địa chỉ chi tiết"></textarea>
+                        <ng-container
+                        *ngIf="form.get('addressDetail')?.touched || form.get('addressDetail')?.dirty"
+                      >
+                        <span
+                          class="text-danger"
+                          *ngIf="form.get('addressDetail')?.hasError('required')"
+                        >
+                          Địa chỉ chi tiết không để trống
+                        </span>
+                      </ng-container>
+                        </div>
+                          <div class="col-12 mb-2 mt-3 ">
+                            <p  style="display: inline"
+                            > Số điện thoại
+                              <span class="text-danger me-3">*</span></p
+                            >
+                            <input
+                              formControlName="phoneNumber"
+                              nz-input
+                              [maxLength]="11"
+                              placeholder="Nhập số điện thoại"
+                            />
+                            <ng-container
+                              *ngIf="
+                form.get('phoneNumber')?.touched ||
+                form.get('phoneNumber')?.dirty
+              "
+                            >
+              <span
+                class="text-danger"
+                *ngIf="form.get('phoneNumber')?.hasError('required')"
+              >  SĐT không được để trống
+              </span>
+                              <span
+                                class="text-danger"
+                                *ngIf="form.get('phoneNumber')?.hasError('pattern')"
+                              >
+                <small>Không đúng định dạng SĐT</small>
+              </span>
+                            </ng-container>
+                          </div>
+                        </div>
+
+                      </form>
+                    </div>
+                  </div>
+              </div>
+              <div class="nav nav-tabs mt-3" id="nav-tab" role="tablist">
+                <p>Phương thức thanh toán </p>
+                <div class="radio-tile-group">
+                  <div class="input-container">
+                    <input id="walk" class="radio-button" type="radio"  name="pay" [value] ="PaymentMethod.CARD" [(ngModel)]="pay"/>
+                    <div class="radio-tile">
+                      <label for="walk" class="radio-tile-label">Ngân hàng(VNPay)</label>
+                    </div>
+                  </div>
+                  <div class="input-container">
+                    <input id="bike" class="radio-button" type="radio"  name="pay" [value] ="PaymentMethod.MONEY" [(ngModel)]="pay" />
+                    <div class="radio-tile">
+                      <label for="bike" class="radio-tile-label">Khi nhận hàng</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="infor-ghn">
+                <img src="assets/images/logo_ghn.jpg" class="logo_partner">
+                <img src="assets/images/Logo-VNPAYQR-update.png" class="logo_partner">
+              </div>
+            </div>
+
+            <div class="col-lg-4 col-md-7 col-12 thanhtoan">
+              <div class="right">
+                <ul>
+                  <li>Tổng tiền<span>{{total +'' | vnd}}</span></li>
+                  <li>Phí vận chuyển (GHN)<span>{{this.shipMoney+'' | vnd}}</span></li>
+                  <li>Giảm giá: <span class="fw-bold">{{this.discount + '%'}}</span></li>
+                  <li class="last">Tiền phải trả<span>{{this.total - (this.total * this.discount/100) +this.shipMoney +'' | vnd}}</span></li>
+                </ul>
+                <div class="button5">
+                  <button (click)="createOrder()" class="btn" [disabled]="!form.valid">Đặt hàng</button>
+                  <a href="#" class="btn">Tiếp tục mua</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--/ End Total Amount -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #nodata1>
+  <div class="cart-empty">
+    <img class="img-empty" src="assets/images/empty-cart.png">
+    <button [routerLink]="''"  class="continue-shoping">Mua hàng</button>
+  </div>
+</ng-template>
+<app-footer></app-footer>
